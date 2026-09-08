@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Escolar - Escola de Magistério</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==================== TELA DE LOGIN ==================== -->
+    <div id="tela-login" class="tela-login">
+        <div class="caixa-login">
+            <div class="logo-login">🏫</div>
+            <h1>Portal Escolar</h1>
+            <p class="subtitulo">Sistema de Gestão Académica</p>
+            
+            <div class="grupo-input">
+                <label>Email Institucional</label>
+                <input type="email" id="email" placeholder="aluno@escola.ao">
+            </div>
+            
+            <div class="grupo-input">
+                <label>Senha</label>
+                <input type="password" id="senha" placeholder="••••••••">
+            </div>
+            
+            <button onclick="entrar()" class="btn-primario">ENTRAR</button>
+            <p id="erro-msg" class="mensagem-erro"></p>
+            
+            <div class="info-rodape">
+                <p>© 2026 Escola de Magistério Ferraz Bomboco</p>
+                <p>Suporte: secretaria@escola.ao</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== APLICAÇÃO PRINCIPAL ==================== -->
+    <div id="app" class="app" style="display:none;">
+        
+        <!-- MENU LATERAL -->
+        <nav class="sidebar">
+            <div class="sidebar-topo">
+                <div class="sidebar-logo">🏫</div>
+                <h2>Portal Escolar</h2>
+                <p id="nome-usuario">Carregando...</p>
+            </div>
+            
+            <ul class="menu">
+                <li onclick="mostrarPagina('dashboard')" class="menu-item ativo" id="menu-dashboard">
+                    <span class="icone">📊</span> <span class="texto">Painel Principal</span>
+                </li>
+                <li onclick="mostrarPagina('notas')" class="menu-item" id="menu-notas">
+                    <span class="icone">📝</span> <span class="texto">Minhas Notas</span>
+                </li>
+                <li onclick="mostrarPagina('pautas')" class="menu-item" id="menu-pautas">
+                    <span class="icone">📋</span> <span class="texto">Pautas</span>
+                </li>
+                <li onclick="mostrarPagina('turma')" class="menu-item" id="menu-turma">
+                    <span class="icone">👥</span> <span class="texto">Minha Turma</span>
+                </li>
+                <li onclick="mostrarPagina('admin')" class="menu-item admin-only" id="menu-admin" style="display:none;">
+                    <span class="icone">⚙️</span> <span class="texto">Área do Professor</span>
+                </li>
+            </ul>
+            
+            <div class="sidebar-rodape">
+                <button onclick="sair()" class="btn-sair">🚪 Sair</button>
+            </div>
+        </nav>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="conteudo">
+            
+            <!-- HEADER -->
+            <header class="topbar">
+                <h2 id="titulo-pagina">Painel Principal</h2>
+                <div class="info-topo">
+                    <span class="tag-turma" id="tag-turma">Turma: --</span>
+                    <span class="tag-ano">Ano Letivo: 2026</span>
+                </div>
+            </header>
+
+            <!-- ========== PÁGINA: DASHBOARD ========== -->
+            <section id="pagina-dashboard" class="pagina ativa">
+                <div class="grid-cards">
+                    <div class="card card-azul">
+                        <div class="card-icone">📊</div>
+                        <div class="card-info">
+                            <h3>Média Geral</h3>
+                            <p class="card-valor" id="dash-media">--</p>
+                        </div>
+                    </div>
+                    <div class="card card-verde">
+                        <div class="card-icone">✅</div>
+                        <div class="card-info">
+                            <h3>Disciplinas</h3>
+                            <p class="card-valor" id="dash-disciplinas">--</p>
+                        </div>
+                    </div>
+                    <div class="card card-laranja">
+                        <div class="card-icone">🏆</div>
+                        <div class="card-info">
+                            <h3>Posição na Turma</h3>
+                            <p class="card-valor" id="dash-posicao">--</p>
+                        </div>
+                    </div>
+                    <div class="card card-roxo">
+                        <div class="card-icone">📅</div>
+                        <div class="card-info">
+                            <h3>Trimestre Atual</h3>
+                            <p class="card-valor">3º</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-grande">
+                    <h3>📢 Avisos da Escola</h3>
+                    <div class="lista-avisos">
+                        <div class="aviso">
+                            <span class="aviso-data">02/09/2026</span>
+                            <p>Provas finais do 3º Trimestre começam dia 15 de Setembro. Consultem o calendário.</p>
+                        </div>
+                        <div class="aviso">
+                            <span class="aviso-data">28/08/2026</span>
+                            <p>Entrega de relatórios de estágio pedagógico até 20 de Setembro.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== PÁGINA: NOTAS ========== -->
+            <section id="pagina-notas" class="pagina">
+                <div class="card">
+                    <div class="card-cabecalho">
+                        <h3>📝 Notas do 3º Trimestre</h3>
+                        <select id="seletor-trimestre" onchange="carregarNotas()">
+                            <option value="t1">1º Trimestre</option>
+                            <option value="t2">2º Trimestre</option>
+                            <option value="t3" selected>3º Trimestre</option>
+                        </select>
+                    </div>
+                    <div class="tabela-responsiva">
+                        <table class="tabela-notas">
+                            <thead>
+                                <tr>
+                                    <th>Disciplina</th>
+                                    <th>Nota</th>
+                                    <th>Classificação</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpo-notas">
+                                <tr><td colspan="4" class="vazio">Carregando notas...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== PÁGINA: PAUTAS ========== -->
+            <section id="pagina-pautas" class="pagina">
+                <div class="card">
+                    <h3>📋 Pauta da Turma - 3º Trimestre</h3>
+                    <div class="tabela-responsiva">
+                        <table class="tabela-pauta">
+                            <thead>
+                                <tr>
+                                    <th>Pos.</th>
+                                    <th>Aluno</th>
+                                    <th>Média</th>
+                                    <th>Classificação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpo-pauta">
+                                <tr><td colspan="4" class="vazio">Carregando pauta...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== PÁGINA: TURMA ========== -->
+            <section id="pagina-turma" class="pagina">
+                <div class="card">
+                    <h3>👥 Lista de Alunos</h3>
+                    <div class="grid-turma" id="grid-turma">
+                        <p class="vazio">Carregando lista...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== PÁGINA: ADMIN ========== -->
+            <section id="pagina-admin" class="pagina">
+                <div class="card">
+                    <h3>⚙️ Área do Professor - Lançamento de Notas</h3>
+                    
+                    <div class="formulario-admin">
+                        <div class="grupo-input">
+                            <label>Aluno (Email ou UID)</label>
+                            <input type="text" id="admin-aluno" placeholder="aluno@escola.ao">
+                        </div>
+                        
+                        <div class="grupo-input">
+                            <label>Trimestre</label>
+                            <select id="admin-trimestre">
+                                <option value="t1">1º Trimestre</option>
+                                <option value="t2">2º Trimestre</option>
+                                <option value="t3" selected>3º Trimestre</option>
+                            </select>
+                        </div>
+                        
+                        <div class="grupo-input">
+                            <label>Disciplina</label>
+                            <select id="admin-disciplina">
+                                <option>Matemática</option>
+                                <option>Física</option>
+                                <option>Química</option>
+                                <option>Biologia</option>
+                                <option>Língua Portuguesa</option>
+                                <option>Língua Inglesa</option>
+                                <option>História</option>
+                                <option>Geografia</option>
+                                <option>Filosofia</option>
+                                <option>Educação Moral e Cívica</option>
+                            </select>
+                        </div>
+                        
+                        <div class="grupo-input">
+                            <label>Nota (0-20)</label>
+                            <input type="number" id="admin-nota-valor" min="0" max="20" placeholder="15">
+                        </div>
+                        
+                        <button onclick="lancarNota()" class="btn-primario">💾 GUARDAR NOTA</button>
+                        <p id="admin-msg" class="mensagem-sucesso"></p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Estatísticas da Turma</h3>
+                    <div class="grid-cards" id="admin-stats">
+                        <div class="card card-azul">
+                            <h4>Total de Alunos</h4>
+                            <p class="card-valor" id="stat-total">--</p>
+                        </div>
+                        <div class="card card-verde">
+                            <h4>Média da Turma</h4>
+                            <p class="card-valor" id="stat-media-turma">--</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
